@@ -9,6 +9,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 // Component
+const apiUrl = process.env.REACT_APP_API_URL
+
 const App = () => {
   const [todos, setTodos] = useState([]);
   const addTodo = (newTodo) => { // Called from TodoForm when a new todo is added
@@ -16,7 +18,7 @@ const App = () => {
   };
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/todos/${id}`);
+      await axios.delete(`${apiUrl}/todos/${id}`);
       setTodos(todos.filter(todo => todo._id !== id));
   } catch (error) {
     console.log(error);
@@ -24,7 +26,7 @@ const App = () => {
 
   const toggleCompleted = async (id,currentStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/todos/${id}`, { completed: !currentStatus });
+      await axios.patch(`${apiUrl}/todos/${id}`, { completed: !currentStatus });
       setTodos(todos.map(todo => 
         todo._id === id ? { ...todo, completed: !currentStatus} : todo
       ));
@@ -36,7 +38,7 @@ const App = () => {
   // useEffect runs code when the component (App in this case) loads
   useEffect(() => {
     // Fetch data from the Express server
-    axios.get('http://localhost:5000/todos')
+    axios.get(`${apiUrl}/todos`)
       .then(response => setTodos(response.data)) // Sets Todos with response.data
       .catch(error => console.error(error));
   }, []); // [] means this runs once when the component mounts

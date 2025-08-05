@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 
+const apiUrl = process.env.REACT_APP_API_URL
+
 const TodoForm = ({ onAdd }) => {
   const [task, setTask] = useState('');
   
   const addTodo = async () => {
     if (task.trim() === '') return; 
     try {
-      const response = await axios.post('http://localhost:5000/todos', { task });
+      const response = await axios.post(`${apiUrl}/todos`, { task });
       onAdd(response.data);
       setTask('');
     } catch (error) {
